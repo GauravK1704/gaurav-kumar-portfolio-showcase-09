@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Download } from 'lucide-react';
+import jsPDF from 'jspdf';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,58 +24,97 @@ const Header = () => {
   };
 
   const handleDownloadResume = () => {
-    // Create a simple resume PDF content
-    const resumeContent = `
-Gaurav Kumar - Software Developer Resume
-
-CONTACT INFORMATION
-Email: gaurav@example.com
-Phone: +1 (555) 123-4567
-LinkedIn: linkedin.com/in/gauravkumar
-GitHub: github.com/gauravkumar
-
-PROFESSIONAL SUMMARY
-Experienced software developer with expertise in modern web technologies.
-Passionate about creating efficient, scalable applications with clean code.
-
-TECHNICAL SKILLS
-• Frontend: React, JavaScript, TypeScript, HTML5, CSS3, Tailwind CSS
-• Backend: Node.js, Express, Python, Java
-• Database: MongoDB, PostgreSQL, MySQL
-• Tools: Git, Docker, AWS, CI/CD
-
-EXPERIENCE
-Senior Software Developer | TechCorp (2022-Present)
-• Developed and maintained React applications
-• Collaborated with cross-functional teams
-• Improved application performance by 40%
-
-Software Developer | WebSolutions (2020-2022)
-• Built responsive web applications
-• Implemented RESTful APIs
-• Mentored junior developers
-
-EDUCATION
-Bachelor of Science in Computer Science
-University Name (2016-2020)
-GPA: 3.8/4.0
-
-PROJECTS
-• E-commerce Platform: Full-stack application with React and Node.js
-• Task Management App: Real-time collaboration tool
-• Weather Dashboard: API integration and data visualization
-    `;
-
-    // Create and download the resume as a text file (in a real app, you'd generate a PDF)
-    const blob = new Blob([resumeContent], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Gaurav_Kumar_Resume.txt';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+    const pdf = new jsPDF();
+    
+    // Set font sizes and line height
+    const lineHeight = 7;
+    let yPosition = 20;
+    
+    // Header
+    pdf.setFontSize(20);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Gaurav Kumar', 20, yPosition);
+    yPosition += 10;
+    
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Software Developer', 20, yPosition);
+    yPosition += 15;
+    
+    // Contact Information
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('CONTACT INFORMATION', 20, yPosition);
+    yPosition += lineHeight;
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Email: gk1237677@gmail.com', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('LinkedIn: linkedin.com/in/gaurav-kumar-502371216/', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('GitHub: github.com/GauravK1704', 20, yPosition);
+    yPosition += 10;
+    
+    // Professional Summary
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('PROFESSIONAL SUMMARY', 20, yPosition);
+    yPosition += lineHeight;
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    const summary = 'B.Tech CSE Student passionate about building impactful web and AI-based applications. Building the future, one line of code at a time.';
+    const summaryLines = pdf.splitTextToSize(summary, 170);
+    pdf.text(summaryLines, 20, yPosition);
+    yPosition += summaryLines.length * lineHeight + 5;
+    
+    // Technical Skills
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('TECHNICAL SKILLS', 20, yPosition);
+    yPosition += lineHeight;
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('• Frontend: React, JavaScript, TypeScript, HTML5, CSS3, Tailwind CSS', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('• Backend: Node.js, Express, Python, Java', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('• Database: MongoDB, PostgreSQL, MySQL', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('• Tools: Git, Docker, AWS, CI/CD', 20, yPosition);
+    yPosition += 10;
+    
+    // Education
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('EDUCATION', 20, yPosition);
+    yPosition += lineHeight;
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Bachelor of Technology in Computer Science Engineering', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('Lovely Professional University (2022-2026)', 20, yPosition);
+    yPosition += 10;
+    
+    // Projects
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('PROJECTS', 20, yPosition);
+    yPosition += lineHeight;
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('• E-commerce Platform: Full-stack application with React and Node.js', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('• AI-Based Applications: Machine learning and AI integration projects', 20, yPosition);
+    yPosition += lineHeight;
+    pdf.text('• Web Development Projects: Modern responsive web applications', 20, yPosition);
+    
+    // Save the PDF
+    pdf.save('Gaurav_Kumar_Resume.pdf');
   };
 
   const navItems = [
